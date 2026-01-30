@@ -1,0 +1,115 @@
+:root {
+    --left-bg-color: #1a1a1a; /* Dark coding theme */
+    --right-bg-color: #f0f0f0; /* Light gallery theme */
+    --hover-width: 75%;
+    --other-width: 25%;
+    --transition-speed: 1000ms;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto Mono', monospace; /* Default font */
+    height: 100vh;
+    overflow: hidden; /* Prevents scrollbars during animation */
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #333;
+}
+
+/* Base Split Classes */
+.split {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: width var(--transition-speed) ease-in-out;
+}
+
+/* --- LEFT SIDE (ENGINEER) --- */
+.left {
+    left: 0;
+    background: var(--left-bg-color);
+    /* Optional: Add a subtle code pattern image here */
+    color: #00ff41; /* Classic Matrix Green or use White */
+}
+
+/* --- RIGHT SIDE (PHOTOGRAPHER) --- */
+.right {
+    right: 0;
+    background: url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80') no-repeat center center/cover;
+    color: white;
+}
+
+/* Font Styles */
+.left h2 { font-family: 'Roboto Mono', monospace; }
+.right h2 { font-family: 'Playfair Display', serif; }
+
+/* Centered Content */
+.content {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    white-space: nowrap;
+}
+
+h2 {
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+
+.btn {
+    text-decoration: none;
+    color: inherit;
+    border: 2px solid;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.btn:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+/* Hover Interactions */
+/* If hovering left, left grows, right shrinks */
+.container.hover-left .left { width: var(--hover-width); }
+.container.hover-left .right { width: var(--other-width); }
+
+/* If hovering right, right grows, left shrinks */
+.container.hover-right .right { width: var(--hover-width); }
+.container.hover-right .left { width: var(--other-width); }
+
+/* Mobile Responsiveness */
+@media(max-width: 800px) {
+    h2 { font-size: 2rem; }
+    
+    .split {
+        width: 100%;
+        height: 50%;
+    }
+    .right { top: 50%; }
+    
+    /* Disable the hover expansion on mobile for better UX */
+    .container.hover-left .left,
+    .container.hover-left .right,
+    .container.hover-right .right,
+    .container.hover-right .left {
+        width: 100%;
+        height: 50%;
+    }
+}
