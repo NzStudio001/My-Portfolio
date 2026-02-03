@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - NZ Studio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CORE STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --col-light: #B8E3E9;
+            --col-mid: #93B1B5;
+            --col-slate: #4F7C82;
+            --col-dark: #0B2E33;
+            --font-ui: 'Raleway', sans-serif;
+            --font-display: 'Bebas Neue', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-ui);
+            color: var(--col-dark);
+            background-color: #fcfcfc;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a { text-decoration: none; transition: all 0.3s ease; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 15px 40px; 
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background-color: var(--col-slate); color: white;
+            font-family: var(--font-ui); font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase;
+        }
+        .logo img { height: 35px; width: auto; display: block; filter: brightness(0) invert(1); }
+        .nav-left { display: flex; gap: 40px; } .nav-left a { color: inherit; } .nav-left a:hover { opacity: 0.7; }
+        .nav-socials { display: flex; gap: 20px; font-size: 1.2rem; } .nav-socials a { color: inherit; }
+        .hamburger { display: none; font-size: 1.5rem; cursor: pointer; margin-left: auto; }
+        .logo { position: absolute; left: 50%; transform: translateX(-50%); }
+
+        /* --- CONTACT PAGE SPECIFIC --- */
+        .page-container {
+            flex: 1; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: 5rem;
+            color: var(--col-slate);
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        .contact-sub {
+            font-size: 1.2rem;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .email-link {
+            font-size: 1.5rem;
+            color: var(--col-slate);
+            font-weight: 700;
+            border-bottom: 2px solid transparent;
+            display: inline-block; /* Helps with hover effect */
+        }
+
+        .email-link:hover {
+            color: var(--col-dark);
+            border-bottom: 2px solid var(--col-dark);
+        }
+
+        /* --- FOOTER --- */
+        footer { background: var(--col-dark); color: white; padding: 60px 20px; text-align: center; font-size: 0.8rem; letter-spacing: 3px; }
+        footer p { opacity: 0.6; }
+
+        /* --- MOBILE OVERLAY --- */
+        .mobile-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: var(--col-slate); z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .mobile-menu-overlay.active { opacity: 1; pointer-events: all; }
+        .mobile-menu-overlay a { color: white; font-family: var(--font-display); font-size: 3rem; margin: 15px 0; letter-spacing: 2px; }
+        .close-btn { position: absolute; top: 20px; right: 30px; font-size: 2rem; color: white; cursor: pointer; }
+        .mobile-socials { margin-top: 50px; display: flex; gap: 30px; font-size: 1.5rem; color: white; }
+        .mobile-socials a { color: white; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .nav-left, .nav-socials { display: none; }
+            .hamburger { display: block; }
+            .page-title { font-size: 3.5rem; }
+            .email-link { font-size: 1.2rem; }
+        }
+        @media (max-width: 600px) {
+            nav { padding: 15px 20px; }
+            .logo img { height: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <a href="index.html">Work</a>
+            <a href="aboutus.html">About</a>
+            <a href="contact.html" style="opacity: 1; font-weight: 700;">Contact</a>
+        </div>
+        <div class="logo">
+            <a href="index.html"><img src="NzStudio_Logo.svg" alt="NZ Studio Logo"></a>
+        </div>
+        <div class="nav-socials">
+            <a href="https://wa.me/+60196469575"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:nzstudio001@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.instagram.com/nazzzz0_o/"><i class="fab fa-instagram"></i></a>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <div class="close-btn" onclick="toggleMenu()"><i class="fas fa-times"></i></div>
+        <a href="index.html">Work</a>
+        <a href="aboutus.html">About</a>    
+        <a href="contact.html">Contact</a>
+        <div class="mobile-socials">
+            <a href="https://wa.me/+60196469575"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:nzstudio001@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.instagram.com/nazzzz0_o/"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <h1 class="page-title">LET'S TALK.</h1>
+        
+        <p class="contact-sub">
+            If you're interested in booking a session, drop me a line at
+        </p>
+        <a href="mailto:nzstudio001@gmail.com" class="email-link">
+            nzstudio001@gmail.com
+        </a>
+
+        <p class="contact-sub" style="margin-top: 50px;">
+            Or chat via WhatsApp at
+        </p>
+        <a href="https://wa.me/+60196469575" target="_blank" class="email-link">
+            <i class="fab fa-whatsapp" style="margin-right: 5px;"></i> +60 19-646 9575
+        </a>
+    </div>
+
+    <footer>
+        <p>© 2026 NZ STUDIO. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

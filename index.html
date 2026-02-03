@@ -2,442 +2,486 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Interactive Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Mrs+Saint+Delafield&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NZ Studio - Portfolio</title>
     
-    <style>
-        :root {
-            --bg-color: #EBEBEB;
-            --text-black: #1a1a1a;
-            --text-red: #ff3333;
-            --scroll-speed: 1.5s; /* Desktop Speed */
-        }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:wght@200;300;400;500;700&display=swap" rel="stylesheet">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- RESET & VARIABLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            /* PALETTE */
+            --col-light: #B8E3E9;
+            --col-mid: #93B1B5;
+            --col-slate: #4F7C82;
+            --col-dark: #0B2E33;
+            
+            /* FONTS */
+            --font-ui: 'Raleway', sans-serif;
+            --font-display: 'Bebas Neue', sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            font-family: 'Inter', sans-serif;
-            overflow: hidden; 
-            height: 100vh;
-            width: 100vw;
-            cursor: none;
-            overscroll-behavior: none;
+            font-family: var(--font-ui);
+            color: var(--col-dark);
+            overflow-x: hidden;
+            background-color: #fcfcfc;
+            scroll-behavior: smooth;
         }
 
-        /* --- DESKTOP: CINEMATIC SLIDE --- */
-        .scroll-container {
-            position: absolute;
+        a { text-decoration: none; transition: all 0.3s ease; }
+
+        /* --- NAVIGATION BAR --- */
+        nav {
+            position: fixed;
             top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            transition: transform var(--scroll-speed) cubic-bezier(0.2, 0.8, 0.2, 1); 
-            will-change: transform;
+            width: 100%;
+            padding: 15px 40px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.4s ease;
+            background-color: var(--col-slate);
+            color: white;
+            
+            font-family: var(--font-ui);
+            font-weight: 400;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
-        section {
-            height: 100vh;
-            width: 100vw;
-            position: relative;
-            overflow: hidden;
+        nav.scrolled {
+            background-color: white;
+            color: var(--col-slate);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            padding: 10px 40px;
         }
 
-        /* --- CUSTOM CURSOR --- */
-        .cursor-signature {
+        /* Desktop Nav Elements */
+        .nav-left { display: flex; gap: 40px; }
+        .nav-left a { color: inherit; position: relative; }
+        .nav-left a:hover { opacity: 0.7; }
+
+        .nav-socials { display: flex; gap: 20px; font-size: 1.2rem; }
+        .nav-socials a { color: inherit; }
+
+        /* LOGO */
+        .logo {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            z-index: 1001;
+        }
+
+        .logo img {
+            height: 35px; 
+            width: auto;
+            display: block;
+            filter: brightness(0) invert(1);
+            transition: all 0.4s ease;
+        }
+
+        nav.scrolled .logo img {
+            filter: invert(46%) sepia(13%) saturate(927%) hue-rotate(139deg) brightness(96%) contrast(88%);
+        }
+
+        /* --- HAMBURGER MENU ICON (Visible on Mobile) --- */
+        .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1002;
+            /* FIX: This pushes the icon to the right side on mobile */
+            margin-left: auto; 
+        }
+
+        /* --- MOBILE FULLSCREEN MENU OVERLAY --- */
+        .mobile-menu-overlay {
             position: fixed;
             top: 0;
             left: 0;
-            font-family: 'Mrs Saint Delafield', cursive;
-            font-size: 4rem;
-            color: var(--text-red);
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            white-space: nowrap;
-            mix-blend-mode: multiply;
-        }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1000px;
-        }
-
-        .meta-info {
-            position: absolute;
-            font-size: 0.8rem;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            z-index: 2;
-        }
-        .top-left { top: 40px; left: 40px; }
-        .top-right { top: 40px; right: 40px; }
-        .bottom-left { bottom: 40px; left: 40px; }
-        .bottom-right { bottom: 40px; right: 40px; }
-
-        .big-text {
-            font-family: 'Anton', sans-serif;
-            font-size: 18vw;
-            color: var(--text-black);
-            line-height: 0.8;
-            text-transform: uppercase;
-            letter-spacing: 0.05em; 
-            cursor: default;
-            user-select: none;
-            transition: transform 0.1s ease-out;
-            text-align: center;
-        }
-
-        /* --- PLAYGROUND SECTION --- */
-        .playground-section {
-            background: #e0e0e0;
-            border-top: 1px solid #ccc;
-        }
-
-        .instruction {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.5rem;
-            color: #999;
-            pointer-events: none;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            opacity: 0.5;
-            text-align: center;
             width: 100%;
-        }
-
-        .draggable-photo {
-            position: absolute;
-            width: 250px;
-            padding: 10px 10px 40px 10px;
-            background: white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            cursor: grab;
-            transition: transform 0.1s, box-shadow 0.3s;
-            user-select: none;
-            /* Important: This allows dragging the photo without triggering the page scroll */
-            touch-action: none; 
-        }
-        
-        .draggable-photo:active {
-            cursor: grabbing;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            z-index: 1000 !important;
-            transform: scale(1.05);
-        }
-        
-        .draggable-photo img {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            background: #ddd;
-            pointer-events: none;
-        }
-
-        /* --- CONTACT SECTION --- */
-        .contact-section {
-            background-color: #111;
-            color: white;
+            height: 100vh;
+            background-color: var(--col-slate);
+            z-index: 1000;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
         }
 
-        .contact-subtitle {
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            opacity: 0.6;
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            pointer-events: all;
         }
 
-        .whatsapp-link {
-            font-family: 'Anton', sans-serif;
-            font-size: 8vw;
+        .mobile-menu-overlay a {
             color: white;
-            text-decoration: none;
-            text-transform: uppercase;
-            line-height: 1;
-            transition: color 0.3s;
-            cursor: none;
-            position: relative;
-            z-index: 10;
+            font-family: var(--font-display);
+            font-size: 3rem;
+            margin: 15px 0;
+            letter-spacing: 2px;
         }
 
-        .whatsapp-link:hover {
-            color: #25D366;
-            -webkit-text-stroke: 1px white;
-        }
+        .mobile-menu-overlay a:hover { color: var(--col-light); }
 
-        .footer-nav {
+        .close-btn {
             position: absolute;
-            bottom: 40px;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        .mobile-socials {
+            margin-top: 50px;
             display: flex;
             gap: 30px;
+            font-size: 1.5rem;
         }
 
-        .footer-nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 0.9rem;
-            opacity: 0.5;
-            transition: opacity 0.3s;
-            cursor: none;
-        }
-        .footer-nav a:hover { opacity: 1; }
-
-        /* --- LOADER --- */
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
+        /* --- HERO SECTION --- */
+        .hero {
+            position: relative;
             height: 100vh;
-            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-image: url('Images/DSC03710.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 46, 51, 0.4);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+            padding: 0 20px;
+            opacity: 1; 
+            transform: translateY(0);
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: 6rem;
+            line-height: 0.9;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 400; 
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .hero h2 {
+            font-family: var(--font-ui);
+            font-weight: 300;
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            display: inline-block;
+            border-top: 1px solid rgba(255,255,255,0.7);
+            border-bottom: 1px solid rgba(255,255,255,0.7);
+            padding: 12px 40px;
+        }
+
+        /* --- GRID CONTENT --- */
+        .content-section { 
+            background: white; 
+            position: relative; 
+            z-index: 10; 
+            padding: 80px 40px;
+        }
+        
+        .grid-container { max-width: 1200px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; }
+        
+        .grid-item {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--col-mid);
+        }
+
+        .grid-item img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        .grid-item:hover img { transform: scale(1.05); }
+
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(184, 227, 233, 0.9); 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            color: var(--col-dark);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .grid-item:hover .overlay { opacity: 1; }
+
+        .cat-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            color: var(--col-dark);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--col-dark);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 400;
+        }
+        
+        footer p { opacity: 0.6; }
+
+        /* --- BACK TO TOP BUTTON --- */
+        #backToTopBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--col-slate);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 10000;
-            transition: transform 0.8s ease-in-out;
+            font-size: 1.2rem;
         }
-        .loader-h { color: white; font-family: 'Inter', sans-serif; font-size: 4rem; position: relative; }
-        .loader.hidden { transform: translateY(-100%); }
 
-        /* --- MOBILE: TIKTOK / REELS SNAP LOGIC --- */
-        @media (max-width: 768px) {
-            body {
-                /* Allow scroll bar but hide it via overflow styling if needed */
-                overflow: hidden; 
-                cursor: auto; 
-            }
+        #backToTopBtn.show {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0);
+        }
 
-            /* Turn the container into a scrollable snap area */
-            .scroll-container {
-                position: relative;
-                height: 100vh;
-                width: 100%;
-                overflow-y: scroll; /* Allow vertical scroll */
-                scroll-snap-type: y mandatory; /* THE TIKTOK MAGIC: Force snap */
-                scroll-behavior: smooth;
-                transform: none !important; /* Disable JS slide on mobile */
-            }
+        #backToTopBtn:hover {
+            background-color: var(--col-dark);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
 
-            /* Each section forces a stop */
-            section {
-                height: 100vh;
-                scroll-snap-align: start; /* Snap top of section to top of screen */
-                scroll-snap-stop: always; /* Force it to stop, don't skip sections */
-            }
-
-            /* Mobile Styling Adjustments */
-            .cursor-signature { display: none; }
-            .big-text { font-size: 20vw; line-height: 1; }
-            .meta-info { font-size: 0.7rem; }
-            .top-left { top: 20px; left: 20px; }
-            .top-right { top: 20px; right: 20px; }
-            .bottom-left { bottom: 20px; left: 20px; }
-            .bottom-right { bottom: 20px; right: 20px; }
-            .draggable-photo { width: 160px; padding: 8px 8px 30px 8px; }
-            .draggable-photo img { height: 200px; }
-            .whatsapp-link { font-size: 18vw; cursor: pointer; }
-            .footer-nav { bottom: 30px; gap: 20px; }
-            .footer-nav a { cursor: pointer; opacity: 0.8; }
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 4.5rem; }
+            .grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            nav { padding: 15px 30px; }
+            .nav-left, .nav-socials { display: none; }
+            .hamburger { display: block; }
+            .logo { position: absolute; left: 50%; transform: translateX(-50%); }
+        }
+        
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 3.5rem; letter-spacing: 1px; }
+            .hero h2 { font-size: 0.7rem; padding: 10px 20px; }
+            .grid { grid-template-columns: 1fr; }
+            nav { padding: 15px 20px; }
+            .logo img { height: 30px; } 
+            #backToTopBtn { bottom: 20px; right: 20px; width: 45px; height: 45px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="loader" id="loader">
-        <div class="loader-h">ArzukaStudio</div>
+    <nav id="navbar">
+        <div class="nav-left">
+            <a href="index.html">Work</a>
+            <a href="aboutus.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        
+        <div class="logo">
+            <a href="index.html"><img src="NzStudio_Logo.svg" alt="NZ Studio Logo"></a>
+        </div>
+        
+        <div class="nav-socials">
+            <a href="https://wa.me/+60196469575" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:nzstudio001@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.instagram.com/nazzzz0_o/" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+
+        <div class="hamburger" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <div class="close-btn" onclick="toggleMenu()">
+            <i class="fas fa-times"></i>
+        </div>
+        
+        <a href="index.html" onclick="toggleMenu()">Work</a>
+        <a href="aboutus.html" onclick="toggleMenu()">About</a>
+        <a href="contact.html" onclick="toggleMenu()">Contact</a>
+
+        <div class="mobile-socials">
+            <a href="https://wa.me/+60196469575"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:nzstudio001@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.instagram.com/nazzzz0_o/"><i class="fab fa-instagram"></i></a>
+        </div>
     </div>
 
-    <div class="cursor-signature" id="signature">Naz</div>
+    <button id="backToTopBtn" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
-    <div class="scroll-container" id="scrollContainer">
+    <section class="hero">
+        <div class="hero-content" id="heroText">
+            <h1>Hey There! I'm Nazrin</h1>
+            <h2>Your Personal Photographer</h2>
+        </div>
+    </section>
 
-        <section class="hero" id="hero">
-            <div class="meta-info top-left">ArtWork Presentation</div>
-            <div class="meta-info top-right">Based in KL</div>
-            <h1 class="big-text" id="tilt-text">PORTFOLIO</h1>
-            <div class="meta-info bottom-left">@Nazzzz0_o</div>
-            <div class="meta-info bottom-right">Scroll Down &darr;</div>
-        </section>
+    <section class="content-section">
+        <div class="grid-container">
+            <div class="grid">
+                
+                <a href="events.html">
+                    <div class="grid-item">
+                        <img src="Images/DSC09394.jpg" alt="Event">
+                        <div class="overlay"><span class="cat-title">Events</span></div>
+                    </div>
+                </a>
 
-        <section class="playground-section" id="playground">
-            <div class="instruction">Drag The Photos</div>
-            
-            <div class="draggable-photo" style="top: 20%; left: 10%; transform: rotate(-5deg);">
-                <img src="Images/DSC03544.jpg" alt="Photo 1">
-            </div>
-            <div class="draggable-photo" style="top: 35%; left: 50%; transform: translate(-50%, 0) rotate(10deg);">
-                <img src="Images/DSC03909.jpg" alt="Photo 2">
-            </div>
-            <div class="draggable-photo" style="top: 60%; left: 20%; transform: rotate(-15deg);">
-                <img src="Images/DSC05410.jpg" alt="Photo 3">
-            </div>
-             <div class="draggable-photo" style="top: 15%; left: 60%; transform: rotate(5deg);">
-                <img src="Images/DSC09394.jpg" alt="Photo 4">
-            </div>
-            <div class="draggable-photo" style="top: 65%; left: 65%; transform: rotate(8deg);">
-                <img src="Images/DSC09997.jpg" alt="Photo 5">
-            </div>
-        </section>
+                <a href="cosplay.html">
+                    <div class="grid-item">
+                        <img src="Images/DSC05410.jpg" alt="Cosplay">
+                        <div class="overlay"><span class="cat-title">Cosplay World</span></div>
+                    </div>
+                </a>
 
-        <section class="contact-section" id="contact">
-            <div class="contact-subtitle">Let's Chat</div>
-            <a href="https://wa.me/+60196469575?text=Hello%20do%20you%20still%20open%3F" target="_blank" class="whatsapp-link">
-                HIRE<br>ME
-            </a>
-            <div class="footer-nav">
-                <a href="https://www.instagram.com/nazzzz0_o/?utm_source=ig_web_button_share_sheet" target="_blank">Instagram</a>
-                <a href="https://www.linkedin.com/in/nazrin-nordin-3757ba340" target="_blank">LinkedIn</a>
-            </div>
-        </section>
+                <a href="portraits.html">
+                    <div class="grid-item">
+                        <img src="Images/DSC09997.jpg" alt="Portrait">
+                        <div class="overlay"><span class="cat-title">Portraits</span></div>
+                    </div>
+                </a>
+                
+                <a href="fashion.html">
+                    <div class="grid-item">
+                        <img src="Images/DSC08516.jpg" alt="Fashion">
+                        <div class="overlay"><span class="cat-title">Fashion</span></div>
+                    </div>
+                </a>
 
-    </div>
+                <a href="portraits.html">
+                    <div class="grid-item">
+                        <img src="Images/DSC03544.jpg" alt="Portrait">
+                        <div class="overlay"><span class="cat-title">Portraits</span></div>
+                    </div>
+                </a>
+
+                <a href="streets.html">
+                    <div class="grid-item">
+                        <img src="Images/DSC03909.jpg" alt="Nature">
+                        <div class="overlay"><span class="cat-title">Nature</span></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 NZ STUDIO. ALL RIGHTS RESERVED.</p>
+    </footer>
 
     <script>
-        // --- 1. LOADER ---
-        window.addEventListener('load', () => {
-            setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 1000);
-        });
+        const navbar = document.getElementById('navbar');
+        const heroText = document.getElementById('heroText');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const backToTopBtn = document.getElementById('backToTopBtn');
 
-        // --- 2. DESKTOP SLIDE LOGIC (DISABLED ON MOBILE) ---
-        const container = document.getElementById('scrollContainer');
-        let currentSection = 0;
-        const totalSections = 3; 
-        let isScrolling = false; 
-
-        if (window.innerWidth > 768) {
-            window.addEventListener('wheel', (e) => {
-                if (isScrolling) return;
-                const direction = e.deltaY > 0 ? 1 : -1;
-                const nextSection = currentSection + direction;
-
-                if (nextSection >= 0 && nextSection < totalSections) {
-                    isScrolling = true;
-                    currentSection = nextSection;
-                    container.style.transform = `translateY(-${currentSection * 100}vh)`;
-                    setTimeout(() => { isScrolling = false; }, 1500);
-                }
-            });
-        }
-
-        // --- 3. CUSTOM CURSOR (Desktop Only) ---
-        const signature = document.getElementById('signature');
-        let mouseX = 0, mouseY = 0, sigX = 0, sigY = 0;
-        
-        if (window.innerWidth > 768) {
-            document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
-            function animateCursor() {
-                sigX += (mouseX - sigX) * 0.1;
-                sigY += (mouseY - sigY) * 0.1;
-                signature.style.left = `${sigX}px`;
-                signature.style.top = `${sigY}px`;
-                requestAnimationFrame(animateCursor);
-            }
-            animateCursor();
-        }
-
-        // --- 4. TILT TEXT (Desktop Only) ---
-        const hero = document.getElementById('hero');
-        const tiltText = document.getElementById('tilt-text');
-        
-        if (window.innerWidth > 768) {
-            hero.addEventListener('mousemove', (e) => {
-                const { offsetWidth: width, offsetHeight: height } = hero;
-                const { clientX: x, clientY: y } = e;
-                const xWalk = Math.round((x / width * 40) - 20);
-                const yWalk = Math.round((y / height * 40) - 20);
-                tiltText.style.transform = `rotateX(${-yWalk}deg) rotateY(${xWalk}deg)`;
-            });
-            hero.addEventListener('mouseleave', () => { tiltText.style.transform = `rotateX(0deg) rotateY(0deg)`; });
-        }
-
-        // --- 5. DRAGGABLE PHOTOS (Mobile & Desktop) ---
-        const photos = document.querySelectorAll('.draggable-photo');
-        let highestZ = 10;
-        
-        photos.forEach(photo => {
-            const randomRotation = Math.random() * 30 - 15;
-            photo.style.transform = `rotate(${randomRotation}deg)`;
-
-            let isDragging = false;
-            let startX, startY, initialLeft, initialTop;
-
-            // Mouse Events
-            photo.addEventListener('mousedown', startDrag);
-            window.addEventListener('mousemove', moveDrag);
-            window.addEventListener('mouseup', endDrag);
-
-            // Touch Events
-            photo.addEventListener('touchstart', (e) => { startDrag(e.touches[0]); }, {passive: false});
-            photo.addEventListener('touchmove', (e) => {
-                if (isDragging) {
-                    // This prevents dragging the photo from scrolling the page
-                    // But because we used 'touch-action: none' in CSS, this is doubly safe
-                    e.preventDefault(); 
-                    moveDrag(e.touches[0]);
-                }
-            }, {passive: false});
-            photo.addEventListener('touchend', endDrag);
-
-            function startDrag(e) {
-                isDragging = true;
-                highestZ++;
-                photo.style.zIndex = highestZ;
-                startX = e.clientX;
-                startY = e.clientY;
-                const style = window.getComputedStyle(photo);
-                initialLeft = parseInt(style.left || 0);
-                initialTop = parseInt(style.top || 0);
-                photo.style.cursor = 'grabbing';
+        // Scroll Logic
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.scrollY;
+            
+            // Navbar Transition
+            if (currentScroll > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
             }
 
-            function moveDrag(e) {
-                if (!isDragging) return;
-                const dx = e.clientX - startX;
-                const dy = e.clientY - startY;
-                photo.style.left = `${initialLeft + dx}px`;
-                photo.style.top = `${initialTop + dy}px`;
+            // Hero Parallax Fade
+            const newOpacity = 1 - (currentScroll / 400);
+            const newTranslateY = currentScroll * 0.4;
+            if (newOpacity >= 0) {
+                heroText.style.opacity = newOpacity;
+                heroText.style.transform = `translateY(${newTranslateY}px)`;
             }
 
-            function endDrag() {
-                if(isDragging) {
-                    isDragging = false;
-                    photo.style.cursor = 'grab';
-                }
+            // Show/Hide Back to Top Button
+            if (currentScroll > 400) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
             }
         });
 
-        // --- 6. LINK EFFECTS ---
-        const waLink = document.querySelector('.whatsapp-link');
-        if (window.innerWidth > 768) {
-            waLink.addEventListener('mouseenter', () => {
-                signature.style.color = '#fff';
-                signature.style.mixBlendMode = 'normal';
-            });
-            waLink.addEventListener('mouseleave', () => {
-                signature.style.color = '#ff3333';
-                signature.style.mixBlendMode = 'multiply';
-            });
+        // Toggle Mobile Menu
+        function toggleMenu() {
+            mobileMenu.classList.toggle('active');
         }
+
+        // Back to Top Functionality
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     </script>
-</body>
 
+</body>
 </html>

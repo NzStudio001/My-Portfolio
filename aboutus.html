@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - NZ Studio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- COPYING CORE STYLES FROM INDEX --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --col-light: #B8E3E9;
+            --col-mid: #93B1B5;
+            --col-slate: #4F7C82;
+            --col-dark: #0B2E33;
+            --font-ui: 'Raleway', sans-serif;
+            --font-display: 'Bebas Neue', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-ui);
+            color: var(--col-dark);
+            background-color: #fcfcfc;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; transition: all 0.3s ease; }
+
+        /* --- NAVIGATION (SAME AS INDEX) --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 15px 40px; 
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background-color: var(--col-slate); color: white;
+            font-family: var(--font-ui); font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase;
+        }
+        .logo img { height: 35px; width: auto; display: block; filter: brightness(0) invert(1); }
+        .nav-left { display: flex; gap: 40px; } .nav-left a { color: inherit; } .nav-left a:hover { opacity: 0.7; }
+        .nav-socials { display: flex; gap: 20px; font-size: 1.2rem; } .nav-socials a { color: inherit; }
+        .hamburger { display: none; font-size: 1.5rem; cursor: pointer; margin-left: auto; }
+        .logo { position: absolute; left: 50%; transform: translateX(-50%); }
+
+        /* --- ABOUT PAGE SPECIFIC STYLES --- */
+        .page-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 150px 20px 80px; /* Top padding clears the fixed navbar */
+            text-align: center;
+            min-height: 80vh;
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: 5rem;
+            color: var(--col-slate); /* Matches Brand Color */
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: #444;
+            font-weight: 400;
+        }
+
+        .highlight {
+            color: var(--col-slate);
+            font-weight: 700;
+        }
+
+        .about-image {
+            margin-top: 60px;
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 10px; /* Optional rounded corners */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* --- FOOTER --- */
+        footer { background: var(--col-dark); color: white; padding: 60px 20px; text-align: center; font-size: 0.8rem; letter-spacing: 3px; }
+        footer p { opacity: 0.6; }
+
+        /* --- MOBILE OVERLAY --- */
+        .mobile-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background-color: var(--col-slate); z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .mobile-menu-overlay.active { opacity: 1; pointer-events: all; }
+        .mobile-menu-overlay a { color: white; font-family: var(--font-display); font-size: 3rem; margin: 15px 0; letter-spacing: 2px; }
+        .close-btn { position: absolute; top: 20px; right: 30px; font-size: 2rem; color: white; cursor: pointer; }
+        .mobile-socials { margin-top: 50px; display: flex; gap: 30px; font-size: 1.5rem; color: white; }
+        .mobile-socials a { color: white; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .nav-left, .nav-socials { display: none; }
+            .hamburger { display: block; }
+            .page-title { font-size: 3.5rem; }
+        }
+        @media (max-width: 600px) {
+            nav { padding: 15px 20px; }
+            .logo img { height: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <a href="index.html">Work</a>
+            <a href="aboutus.html" style="opacity: 1; font-weight: 700;">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="logo">
+            <a href="index.html"><img src="NzStudio_Logo.svg" alt="NZ Studio Logo"></a>
+        </div>
+        <div class="nav-socials">
+            <a href="https://wa.me/+60196469575"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:nzstudio001@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.instagram.com/nazzzz0_o/"><i class="fab fa-instagram"></i></a>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+    </nav>
+
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <div class="close-btn" onclick="toggleMenu()"><i class="fas fa-times"></i></div>
+        <a href="index.html">Work</a>
+        <a href="aboutus.html">About</a>
+        <a href="contact.html">Contact</a>
+        <div class="mobile-socials">
+            <a href="https://wa.me/+60196469575"><i class="fab fa-whatsapp"></i></a>
+            <a href="mailto:nzstudio001@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.instagram.com/nazzzz0_o/"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <h1 class="page-title">OH, HELLO.</h1>
+        
+        <p class="about-text">
+            Hey again. I'm <strong>Nazrin</strong>, a photographer based in Kuala Lumpur.
+        </p>
+        
+        <p class="about-text">
+            A student who passionate in photography, capturing moments in 
+            <span class="highlight">Events, Cosplay, Portraits, and Street Photography</span>. 
+            My goal is to turn fleeting moments into lasting memories through my lens.
+        </p>
+        
+        <p class="about-text">
+            I'm currently available for freelance bookings and collaborations.
+            Feel free to browse my work or get in touch!
+        </p>
+
+        <img src="Images/DSC03531.JPG" alt="Nazrin Portrait" class="about-image">
+    </div>
+
+    <footer>
+        <p>© 2026 NZ STUDIO. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
